@@ -17,8 +17,8 @@ public:
      */
     enum Unit
     {
-        BTC,
-        mBTC,
+        //BTC,
+        //mBTC,
         uBTC
     };
 
