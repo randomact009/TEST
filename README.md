@@ -5,6 +5,3 @@ rpc port: 23435
 
 
 
-to do:
-
-maxmoney, blockvalue

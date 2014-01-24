@@ -31,7 +31,6 @@ unsigned int nTransactionsUpdated = 0;
 map<uint256, CBlockIndex*> mapBlockIndex;
 uint256 hashGenesisBlock("0xf1b4cdf03c86099a0758f1c018d1a10bf05afab436c92b93b42bb88970de9821");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20);
-static CBigNum bnStartDiff(~uint256(0) >> 29);
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
 CBigNum bnBestChainWork = 0;
@@ -57,7 +56,7 @@ double dHashesPerSec;
 int64 nHPSTimerStart;
 
 // Settings
-int64 nTransactionFee = 0.1;
+int64 nTransactionFee = 0.01 * COIN;
 int64 nMinimumInputValue = CENT / 100;
 
 
@@ -829,8 +828,11 @@ uint256 static GetOrphanRoot(const CBlock* pblock)
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
-    int64 nSubsidy = blockvalue0 * COIN;
-
+    int64 nSubsidy = 0 * COIN;
+	
+	if (nHeight==1)
+		nSubsidy = 92000000000 * COIN;
+	
     return nSubsidy + nFees;
 }
 
@@ -870,9 +872,6 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
     // Genesis block
     if (pindexLast == NULL)
         return nProofOfWorkLimit;
-	
-	if (pindexLast->nHeight+1 == 20)
-		return bnStartDiff.GetCompact();
 
     // Only change once per interval
     if ((pindexLast->nHeight+1) % nInterval != 0)
